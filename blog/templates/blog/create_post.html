@@ -1,0 +1,30 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+
+<style>
+    .form-container { max-width: 700px; margin: 4rem auto; padding: 0 1rem; }
+    .form-group { margin-bottom: 2rem; }
+    label { display: block; font-family: var(--font-heading); font-size: 1.2rem; margin-bottom: 0.5rem; }
+    .input-field { width: 100%; padding: 15px; border: 1px solid #ddd; border-radius: 2px; font-family: var(--font-body); font-size: 1rem; }
+    .input-field:focus { border-color: var(--primary-color); outline: none; }
+    .btn-submit { background-color: var(--primary-color); color: white; border: none; padding: 15px 40px; font-size: 1rem; text-transform: uppercase; cursor: pointer; display: block; width: 100%; margin-top: 2rem; }
+</style>
+
+<div class="form-container">
+    <div style="text-align: center; margin-bottom: 3rem;">
+        <h1 style="font-family: var(--font-heading); font-size: 2.5rem;">Write a Story</h1>
+    </div>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group"><label>Title</label>{{ form.title }}</div>
+        <div class="form-group"><label>Excerpt</label>{{ form.excerpt }}</div>
+        <div class="form-group"><label>Cover Image</label>{{ form.image }}</div>
+        <div class="form-group"><label>Full Content</label>{{ form.content }}</div>
+        <div class="form-group" style="display: flex; align-items: center; gap: 10px;">{{ form.published }}<label style="margin: 0; font-size: 1rem;">Publish immediately?</label></div>
+        <button type="submit" class="btn-submit">Publish Story</button>
+    </form>
+</div>
+
+{% endblock %}

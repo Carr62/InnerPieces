@@ -1,0 +1,78 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+
+<div class="auth-wrapper">
+    <div class="auth-card glass-card">
+        <div class="auth-visual"></div>
+        <div class="auth-form">
+            <h2>Welcome Back</h2>
+            <form method="post" id="login-form">
+                {% csrf_token %}
+                <div class="input-group">
+                    <label>Username</label>
+                    <input type="text" name="username" required>
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" name="password" required>
+                </div>
+                <button type="submit" class="btn-submit">Enter</button>
+                <div class="auth-footer">
+                    New? <a href="{% url 'register' %}">Create Account</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="zen-loader"><div class="orb"></div></div>
+
+<style>
+    .auth-wrapper { display: flex; min-height: 80vh; align-items: center; justify-content: center; padding: 1rem; }
+    .auth-card { 
+        width: 100%; max-width: 800px; display: grid; grid-template-columns: 1fr 1fr; 
+        min-height: 450px; 
+    }
+    .auth-visual { 
+        background: url('https://images.unsplash.com/photo-1475924156734-496f6cac6ec1?w=600') center/cover;
+        position: relative;
+    }
+    .auth-visual::after { content:''; position:absolute; inset:0; background: rgba(0,0,0,0.3); }
+
+    .auth-form { padding: 2.5rem; display: flex; flex-direction: column; justify-content: center; }
+    .auth-form h2 { font-family: 'Cormorant Garamond', serif; font-size: 2rem; margin-bottom: 2rem; color: var(--text-main); }
+    
+    .input-group { margin-bottom: 1.5rem; }
+    .input-group label { display: block; font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); margin-bottom: 5px; }
+    .input-group input { 
+        width: 100%; padding: 10px 0; background: transparent; border: none; 
+        border-bottom: 1px solid var(--border-glass); color: var(--text-main); outline: none; transition: 0.3s;
+    }
+    .input-group input:focus { border-color: var(--accent-primary); }
+
+    .btn-submit { 
+        width: 100%; padding: 14px; background: var(--text-main); color: var(--bg-body); 
+        border: none; border-radius: 50px; font-weight: 600; cursor: pointer; transition: 0.3s;
+    }
+    .btn-submit:hover { background: var(--accent-primary); color: #fff; }
+    
+    .auth-footer { margin-top: 1.5rem; text-align: center; font-size: 0.85rem; color: var(--text-muted); }
+
+    @media(max-width: 768px) { .auth-card { grid-template-columns: 1fr; } .auth-visual { display: none; } }
+
+    /* Loader */
+    #zen-loader { position: fixed; inset: 0; background: var(--bg-body); z-index: 2000; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.5s; }
+    .orb { width: 20px; height: 20px; background: var(--accent-primary); border-radius: 50%; box-shadow: 0 0 20px var(--accent-primary); animation: pulse 2s infinite; }
+    @keyframes pulse { 0% { transform: scale(1); opacity: 0.5; } 50% { transform: scale(1.5); opacity: 1; } 100% { transform: scale(1); opacity: 0.5; } }
+</style>
+
+<script>
+    document.getElementById('login-form').addEventListener('submit', function() {
+        const l = document.getElementById('zen-loader');
+        l.style.display = 'flex';
+        setTimeout(() => l.style.opacity = '1', 10);
+    });
+</script>
+
+{% endblock %}

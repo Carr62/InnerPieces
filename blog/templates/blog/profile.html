@@ -1,0 +1,64 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+
+<div class="container" style="padding-top: 3rem;">
+    
+    <div style="text-align: center; margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border-glass);">
+        <div style="width: 80px; height: 80px; background: var(--bg-glass-hover); border-radius: 50%; border: 1px solid var(--border-glass); display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: var(--text-main); font-family: 'Cormorant Garamond', serif; font-size: 2rem;">
+            {{ user.username|slice:":1" }}
+        </div>
+        <h1 style="font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; margin-bottom: 0.5rem; color: var(--text-main);">{{ user.username }}</h1>
+        <p style="color: var(--accent-primary); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;">Storyteller</p>
+        
+        <div style="margin-top: 1.5rem; display: flex; justify-content: center; gap: 2rem; color: var(--text-muted); font-size: 0.9rem;">
+            <span><strong style="color: var(--text-main);">{{ post_count }}</strong> Stories</span>
+            <span><strong style="color: var(--text-main);">0</strong> Followers</span>
+        </div>
+    </div>
+
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h3 style="font-size: 1.2rem; color: var(--text-main);">My Collection</h3>
+        <a href="{% url 'create_post' %}" style="font-size: 0.85rem; border-bottom: 1px solid var(--border-glass); padding-bottom: 2px;">+ Write New</a>
+    </div>
+
+    <div class="grid-layout">
+        {% for post in user_posts %}
+        <article class="glass-card post-card">
+            <a href="{% url 'blog_detail' post.slug %}">
+                <div class="card-img" style="height: 150px;">
+                    {% if post.image %}
+                        <img src="{{ post.image.url }}">
+                    {% else %}
+                        <div class="placeholder"></div>
+                    {% endif %}
+                </div>
+                <div class="card-content">
+                    <h3>{{ post.title }}</h3>
+                    <div class="card-meta">
+                        <span>{{ post.created_at|date:"M d, Y" }}</span>
+                        <span style="color: var(--accent-primary);">Published</span>
+                    </div>
+                </div>
+            </a>
+        </article>
+        {% empty %}
+        <div style="grid-column: 1/-1; text-align: center; padding: 4rem; border: 1px dashed var(--border-glass); border-radius: 12px; color: var(--text-muted);">
+            No stories yet.
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    .grid-layout { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5rem; }
+    .post-card { display: flex; flex-direction: column; }
+    .card-img { height: 150px; overflow: hidden; background: var(--bg-glass-hover); }
+    .card-img img { width: 100%; height: 100%; object-fit: cover; }
+    .placeholder { width: 100%; height: 100%; }
+    .card-content { padding: 1rem; }
+    .card-content h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; margin-bottom: 0.5rem; color: var(--text-main); }
+    .card-meta { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); }
+</style>
+
+{% endblock %}

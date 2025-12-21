@@ -1,0 +1,224 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inner Pieces</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- THEME ENGINE --- */
+        :root {
+            /* --- DARK THEME (Default) --- */
+            --bg-body: #181a20;
+            --bg-gradient: radial-gradient(at 0% 0%, rgba(60, 20, 100, 0.15) 0px, transparent 50%),
+                           radial-gradient(at 100% 100%, rgba(20, 20, 30, 1) 0px, transparent 50%);
+            
+            --bg-nav: rgba(24, 26, 32, 0.8);
+            --bg-glass: rgba(255, 255, 255, 0.03);
+            --bg-glass-hover: rgba(255, 255, 255, 0.06);
+            --border-glass: rgba(255, 255, 255, 0.08);
+            
+            --text-main: #f0f0f0;
+            --text-muted: #9ca3af;
+            --text-invert: #000000;
+            
+            --accent-primary: #FFB088; /* Softer Peach */
+            --accent-glow: rgba(255, 176, 136, 0.2);
+            
+            --shadow-soft: 0 10px 30px rgba(0,0,0,0.2);
+            --radius-md: 12px;
+            --radius-lg: 20px;
+        }
+
+        /* --- LIGHT THEME --- */
+        [data-theme="light"] {
+            --bg-body: #f8f9fa;
+            --bg-gradient: radial-gradient(at 0% 0%, rgba(255, 230, 200, 0.3) 0px, transparent 50%),
+                           radial-gradient(at 100% 100%, rgba(255, 255, 255, 1) 0px, transparent 50%);
+
+            --bg-nav: rgba(255, 255, 255, 0.85);
+            --bg-glass: #ffffff;
+            --bg-glass-hover: #f1f3f5;
+            --border-glass: rgba(0, 0, 0, 0.06);
+
+            --text-main: #2d3436;
+            --text-muted: #636e72;
+            --text-invert: #ffffff;
+
+            --accent-primary: #d35400; 
+            --accent-glow: rgba(211, 84, 0, 0.15);
+            
+            --shadow-soft: 0 4px 20px rgba(0,0,0,0.06);
+        }
+
+        /* --- GLOBAL RESET --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            color: var(--text-main);
+            background-color: var(--bg-body);
+            background-image: var(--bg-gradient);
+            background-attachment: fixed;
+            background-size: cover;
+            min-height: 100vh;
+            line-height: 1.6;
+            font-size: 16px; /* Comfortable base size */
+            transition: background 0.4s ease, color 0.4s ease;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.2s ease; }
+        ul { list-style: none; }
+        img { max-width: 100%; display: block; }
+
+        /* --- NAVIGATION --- */
+        header {
+            position: sticky; top: 0; z-index: 1000;
+            background: var(--bg-nav);
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--border-glass);
+            padding: 0.8rem 0;
+        }
+
+        .nav-container { 
+            max-width: 1100px; margin: 0 auto; padding: 0 1.5rem;
+            display: flex; justify-content: space-between; align-items: center; 
+        }
+
+        .brand h1 { 
+            font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 600; 
+            color: var(--text-main); letter-spacing: -0.5px;
+        }
+        .brand span { color: var(--accent-primary); font-style: italic; }
+
+        nav ul { display: flex; gap: 1.5rem; align-items: center; }
+        nav a { 
+            font-size: 0.85rem; font-weight: 500; color: var(--text-muted); 
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        nav a:hover { color: var(--text-main); }
+
+        .btn-write {
+            background: var(--bg-glass-hover); 
+            border: 1px solid var(--border-glass);
+            color: var(--text-main) !important;
+            padding: 6px 18px; border-radius: 50px; font-size: 0.8rem; font-weight: 600;
+        }
+        .btn-write:hover { 
+            background: var(--accent-primary); color: var(--text-invert) !important;
+            border-color: var(--accent-primary);
+        }
+
+        /* --- THEME TOGGLE --- */
+        .theme-toggle {
+            background: transparent; border: 1px solid var(--border-glass); 
+            cursor: pointer; width: 32px; height: 32px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--text-main); transition: 0.2s;
+        }
+        .theme-toggle:hover { background: var(--bg-glass-hover); }
+
+        /* --- LAYOUT --- */
+        main { min-height: 80vh; padding: 2rem 0; animation: fadeIn 0.8s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 1.5rem; }
+
+        /* --- FOOTER --- */
+        footer { 
+            margin-top: 5rem; padding: 3rem 0; text-align: center; 
+            border-top: 1px solid var(--border-glass); color: var(--text-muted); 
+            font-size: 0.85rem; 
+        }
+
+        /* --- UTILS --- */
+        .page-header { margin-bottom: 3rem; text-align: center; }
+        .page-header h2 { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; font-weight: 400; color: var(--text-main); }
+        .page-header p { color: var(--text-muted); font-size: 1rem; margin-top: 0.5rem; }
+
+        /* --- CARD STYLES (Shared) --- */
+        .glass-card {
+            background: var(--bg-glass); border: 1px solid var(--border-glass);
+            border-radius: var(--radius-md); overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .glass-card:hover {
+            transform: translateY(-4px); box-shadow: var(--shadow-soft);
+            background: var(--bg-glass-hover); border-color: var(--accent-primary);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <div class="brand">
+                <a href="{% url 'home' %}"><h1>Inner<span>Pieces</span></h1></a>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'blog_list' %}">Explore</a></li>
+                        <li><a href="{% url 'profile' %}">Profile</a></li>
+                        <li><a href="{% url 'create_post' %}" class="btn-write">Write</a></li>
+                        <li>
+                            <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" style="background:none; border:none; cursor:pointer; font-family: inherit; font-weight:500; font-size:0.85rem; color:var(--text-muted); text-transform:uppercase;">Logout</button>
+                            </form>
+                        </li>
+                    {% else %}
+                        <li><a href="{% url 'login' %}">Log In</a></li>
+                        <li><a href="{% url 'register' %}" style="color:var(--accent-primary); font-weight: 600;">Join</a></li>
+                    {% endif %}
+                    
+                    <li>
+                        <button class="theme-toggle" id="theme-btn" title="Toggle Theme">
+                            <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                            <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Inner Pieces.</p>
+    </footer>
+
+    <script>
+        const themeBtn = document.getElementById('theme-btn');
+        const htmlElement = document.documentElement;
+        const iconSun = document.querySelector('.icon-sun');
+        const iconMoon = document.querySelector('.icon-moon');
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        htmlElement.setAttribute('data-theme', savedTheme);
+        updateIcons(savedTheme);
+
+        themeBtn.addEventListener('click', () => {
+            const currentTheme = htmlElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            htmlElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateIcons(newTheme);
+        });
+
+        function updateIcons(theme) {
+            if (theme === 'dark') { iconMoon.style.display = 'block'; iconSun.style.display = 'none'; } 
+            else { iconMoon.style.display = 'none'; iconSun.style.display = 'block'; }
+        }
+    </script>
+</body>
+</html>

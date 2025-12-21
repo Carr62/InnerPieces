@@ -1,0 +1,28 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+
+<article class="container" style="max-width: 800px; padding-top: 3rem;">
+    
+    <header style="text-align: center; margin-bottom: 2.5rem;">
+        <span style="color: var(--accent-primary); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">{{ post.author.username }} &bull; {{ post.created_at|date:"F d, Y" }}</span>
+        <h1 style="font-family: 'Cormorant Garamond', serif; font-size: 3rem; line-height: 1.1; margin: 1rem 0; color: var(--text-main);">{{ post.title }}</h1>
+    </header>
+
+    {% if post.image %}
+    <div style="margin-bottom: 3rem;">
+        <img src="{{ post.image.url }}" style="width: 100%; border-radius: var(--radius-md); border: 1px solid var(--border-glass);">
+    </div>
+    {% endif %}
+
+    <div style="font-size: 1.1rem; line-height: 1.8; color: var(--text-main); margin-bottom: 4rem;">
+        {{ post.content|linebreaks }}
+    </div>
+
+    <div style="text-align: center; padding-top: 2rem; border-top: 1px solid var(--border-glass);">
+        <a href="{% url 'blog_list' %}" style="font-size: 0.9rem; font-weight: 600; color: var(--text-muted);">&larr; Back to Explore</a>
+    </div>
+
+</article>
+
+{% endblock %}
